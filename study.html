@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <time.h>
+
+typedef struct {
+    char nome[30];
+    float preco;
+} Produto;
+
+void bubbleSort(Produto arr[], int n, int *comparisons, int *movements) {
+    *comparisons = 0;
+    *movements = 0;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            (*comparisons)++;
+            if (arr[j].preco > arr[j + 1].preco) {
+                Produto temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                (*movements) += 3;
+            }
+        }
+    }
+}
+
+int main() {
+    Produto produtos[] = {
+        {"Mouse", 89.90}, {"Teclado", 249.50}, {"Monitor", 899.00},
+        {"Headset", 199.90}, {"Notebook", 3500.00}, {"Cadeira", 1200.00},
+        {"Placa de Video", 2500.00}, {"Fonte", 350.00}, {"HD", 280.00},
+        {"SSD", 320.00}, {"Memoria RAM", 430.00}, {"Gabinete", 450.00},
+        {"Mousepad", 45.00}, {"Webcam", 210.00}, {"Caixa de Som", 150.00}
+    };
+    int n = sizeof(produtos) / sizeof(produtos[0]);
+    int comparisons, movements;
+    clock_t start, end;
+
+    start = clock();
+    bubbleSort(produtos, n, &comparisons, &movements);
+    end = clock();
+
+    for (int i = 0; i < n; i++)
+        printf("%s - R$ %.2f\n", produtos[i].nome, produtos[i].preco);
+
+    double tempo = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
+    printf("\nTempo: %.2f ms | Comparacoes: %d | Movimentos: %d\n",
+           tempo, comparisons, movements);
+
+    return 0;
+}
